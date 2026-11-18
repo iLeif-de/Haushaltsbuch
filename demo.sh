@@ -1,6 +1,6 @@
 #!/bin/zsh
-# Frische Demodatenbank anlegen und das Programm damit öffnen. Aufruf im Ordner
-# mac mit ./demo.sh, oder ./demo.sh <pfad> für einen anderen Ort. So prüft der
+# Frische Demodatenbank anlegen und das Programm damit öffnen. Aufruf im
+# Projektordner mit ./demo.sh, oder ./demo.sh <pfad> für einen anderen Ort. So prüft der
 # Nutzer jede Änderung, siehe CLAUDE.md, Abschnitt Prüfen.
 #
 # Die Demodatenbank wird bei jedem Aufruf neu angelegt, eine alte am selben Ort

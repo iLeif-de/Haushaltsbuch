@@ -1,7 +1,7 @@
 # Beschreibung des Xcode Projekts. Die .xcodeproj selbst steht nicht im Repo,
 # sie wird daraus erzeugt, siehe README.md in diesem Ordner.
 #   brew install xcodegen
-#   cd mac && xcodegen generate
+#   xcodegen generate
 name: Haushaltsbuch
 options:
   bundleIdPrefix: de.leifjp
@@ -47,8 +47,9 @@ targets:
       # Die Aktionen für Kurzbefehle, Spotlight und Siri, nur hier und nicht in
       # der Bildprobe, siehe Kurzbefehle.swift
       - path: Kurzbefehle
-      # Die Anleitung für das Menü Hilfe, dieselbe Datei wie auf der Webseite
-      - path: "../web/assets/Anleitung Haushaltsbuch.pdf"
+      # Die Anleitung für das Menü Hilfe. Dieselbe Datei liegt für die Webseite
+      # im Begleitordner unter web/assets, bei Änderungen beide abgleichen.
+      - path: "Docs/Anleitung Haushaltsbuch.pdf"
         buildPhase: resources
     settings:
       base:

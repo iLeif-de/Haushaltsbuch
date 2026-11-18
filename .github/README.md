@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../mac/Haushaltsbuch/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="Symbol des Haushaltsbuchs">
+  <img src="../Haushaltsbuch/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="Symbol des Haushaltsbuchs">
 </p>
 
 <h1 align="center">Haushaltsbuch</h1>
@@ -33,15 +33,14 @@ Das Haushaltsbuch zeigt, was vom Monatsbudget übrig ist. Wiederkehrende Posten 
 
 ## Bauen
 
-Die Xcode-Projektdatei wird aus `mac/project.yml` erzeugt und liegt nicht im Repository.
+Die Xcode-Projektdatei wird aus `project.yml` erzeugt und liegt nicht im Repository.
 
 ```sh
-cd mac
 xcodegen generate
 open Haushaltsbuch.xcodeproj
 ```
 
-**Signierung:** Damit macOS die Aktionen für Kurzbefehle und Spotlight anbietet, muss die App mit einem Entwicklerteam signiert sein. Ein kostenloses Personal Team reicht. Lege dafür `mac/Config/Signing.local.xcconfig` an (wird von Git ignoriert):
+**Signierung:** Damit macOS die Aktionen für Kurzbefehle und Spotlight anbietet, muss die App mit einem Entwicklerteam signiert sein. Ein kostenloses Personal Team reicht. Lege dafür `Config/Signing.local.xcconfig` an (wird von Git ignoriert):
 
 ```
 DEVELOPMENT_TEAM = DEINETEAMID
@@ -49,11 +48,11 @@ DEVELOPMENT_TEAM = DEINETEAMID
 
 Ohne diese Datei baut und läuft das Programm trotzdem, nur ohne Kurzbefehle.
 
-**Weitere Befehle** im Ordner `mac`:
+**Weitere Befehle** im Projektordner:
 
 | Befehl | Wirkung |
 |---|---|
-| `./bauen.sh` | Prüfungen ausführen und die fertige App samt Zip in `mac/dist` bauen |
+| `./bauen.sh` | Prüfungen ausführen und die fertige App samt Zip in `dist` bauen |
 | `./demo.sh` | eine Demodatenbank anlegen und das Programm damit öffnen; die echte Datenbank bleibt unberührt |
 | `xcodebuild test -project Haushaltsbuch.xcodeproj -scheme Haushaltsbuch` | nur die Prüfungen |
 
@@ -68,13 +67,13 @@ Ohne diese Datei baut und läuft das Programm trotzdem, nur ohne Kurzbefehle.
 
 | Ordner | Inhalt |
 |---|---|
-| `mac/Haushaltsbuch` | das Programm (SwiftUI) |
-| `mac/Haushaltsbuch/Kern` | Datenbank, Schema, Migrationen und Berechnungen |
-| `mac/Kurzbefehle` | Aktionen für Kurzbefehle, Siri und Spotlight |
-| `mac/HaushaltsbuchTests` | Prüfungen |
-| `mac/Demodaten` | Werkzeug für die Demodatenbank |
-| `mac/Bildprobe`, `mac/Tastentest` | kleine Entwicklungswerkzeuge |
-| `web/assets/Anleitung Haushaltsbuch.pdf` | die Anleitung, die das Programm im Menü Hilfe zeigt |
+| `Haushaltsbuch` | das Programm (SwiftUI) |
+| `Haushaltsbuch/Kern` | Datenbank, Schema, Migrationen und Berechnungen |
+| `Kurzbefehle` | Aktionen für Kurzbefehle, Siri und Spotlight |
+| `HaushaltsbuchTests` | Prüfungen |
+| `Demodaten` | Werkzeug für die Demodatenbank |
+| `Bildprobe`, `Tastentest` | kleine Entwicklungswerkzeuge |
+| `Docs/Anleitung Haushaltsbuch.pdf` | die Anleitung, die das Programm im Menü Hilfe zeigt |
 
 ## Lizenz
 

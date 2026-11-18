@@ -1,7 +1,7 @@
 #!/bin/zsh
 # Baut Haushaltsbuch.app, Fassung 2.1, aus dem Programm in Swift. Aufruf im
-# Ordner mac mit ./bauen.sh. Das Ergebnis liegt danach in mac/dist, als
-# Haushaltsbuch.app und als Haushaltsbuch.zip für die Webseite. Nach web/assets kopiert wird nicht von
+# Projektordner mit ./bauen.sh. Das Ergebnis liegt danach in dist, als
+# Haushaltsbuch.app und als Haushaltsbuch.zip für die Webseite. Nach web/assets im Begleitordner kopiert wird nicht von
 # selbst, das Veröffentlichen bleibt ein eigener Schritt.
 set -e
 cd "$(dirname "$0")"
@@ -42,5 +42,5 @@ fi
 ditto -c -k --keepParent dist/Haushaltsbuch.app dist/Haushaltsbuch.zip
 
 echo
-echo "Fertig, mac/dist/Haushaltsbuch.app und Haushaltsbuch.zip, Fassung $FASSUNG, Build $BUILD"
+echo "Fertig, dist/Haushaltsbuch.app und Haushaltsbuch.zip, Fassung $FASSUNG, Build $BUILD"
 echo "Zum Benutzen nach /Applications ziehen und Haushalt.app, Fassung 1.2, löschen."
