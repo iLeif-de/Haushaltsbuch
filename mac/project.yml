@@ -1,0 +1,150 @@
+# Beschreibung des Xcode Projekts. Die .xcodeproj selbst steht nicht im Repo,
+# sie wird daraus erzeugt, siehe README.md in diesem Ordner.
+#   brew install xcodegen
+#   cd mac && xcodegen generate
+name: Haushaltsbuch
+options:
+  bundleIdPrefix: de.leifjp
+  # macOS 26 seit Fassung 2.1 (2026-09-26), für die Kurzbefehle, die dort
+  # auch in Spotlight stehen. Fassung 2.0 lief ab macOS 14.
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: de
+
+settings:
+  base:
+    # Sprachfassung 5, damit die strenge Nebenläufigkeitsprüfung von Swift 6
+    # nicht schon beim Übersetzen aufhält.
+    SWIFT_VERSION: "5.0"
+    # Die Fassung, die bauen.sh ausliefert. Die Buildnummer setzt bauen.sh
+    # beim Bau, ein Zeitstempel wie beim Programm in Python.
+    MARKETING_VERSION: "2.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGNING_REQUIRED: "NO"
+    # Keine Sandbox. Die Datenbank liegt in iCloud Drive und wird über ihren
+    # Pfad geöffnet, das braucht so keine Berechtigung und keinen bezahlten
+    # Entwicklerzugang. Mit Sandbox wäre der Pfad gesperrt.
+    # Nur Apple Silicon (2026-10-05). Ein Bau für Intel wird nicht mehr gebraucht,
+    # er machte die Zip größer und dauerte länger. Gilt für alle Ziele und
+    # Konfigurationen, Release baute sonst für beide.
+    ARCHS: arm64
+    ENABLE_APP_SANDBOX: "NO"
+    ENABLE_HARDENED_RUNTIME: "NO"
+
+targets:
+  Haushaltsbuch:
+    type: application
+    platform: macOS
+    configFiles:
+      Debug: Config/Signing.xcconfig
+      Release: Config/Signing.xcconfig
+    sources:
+      # Darin liegt auch Kern/schema.sql, das Schema gehört seit dem
+      # 26. September 2026 diesem Programm und nicht mehr dem in Python.
+      - path: Haushaltsbuch
+      # Die Aktionen für Kurzbefehle, Spotlight und Siri, nur hier und nicht in
+      # der Bildprobe, siehe Kurzbefehle.swift
+      - path: Kurzbefehle
+      # Die Anleitung für das Menü Hilfe, dieselbe Datei wie auf der Webseite
+      - path: "../web/assets/Anleitung Haushaltsbuch.pdf"
+        buildPhase: resources
+    settings:
+      base:
+        INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Leif Jensen-Pistorius"
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.finance
+        INFOPLIST_KEY_NSMainStoryboardFile: ""
+        # Das Symbol kommt aus Haushaltsbuch/Assets.xcassets, erzeugt aus
+        # ../Haushalt.icns, also dasselbe wie beim Programm in Python.
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: "YES"
+        # Das Programm heißt Haushaltsbuch, als Datei, in About Box, Menüleiste
+        # und Fenstertitel, mit eigener Kennung (2026-09-26). Fassung 1.2 in
+        # Python hieß Haushalt.app mit de.leifjp.haushalt, sie wird nicht
+        # ersetzt, sondern gelöscht, das sagt der Newsletter.
+        PRODUCT_NAME: Haushaltsbuch
+        INFOPLIST_KEY_CFBundleDisplayName: Haushaltsbuch
+        # Es gibt nur einen Bau, der weitergegeben wird, Debug wie Release mit
+        # derselben Kennung und denselben Orten (2026-09-26). Eine eigene
+        # Kennung und eigene Orte für den Entwicklungsbau sind verworfen,
+        # siehe CLAUDE.md.
+        PRODUCT_BUNDLE_IDENTIFIER: de.leifjp.haushaltsbuch
+        # Die Team ID kommt aus Config/Signing.xcconfig, siehe dort.
+        # Signiert mit dem kostenlosen Personal Team statt ad hoc, seit dem
+        # Versuch zu Fassung 2.1 (2026-09-27). Ohne Team ID liefert das System
+        # keine Aktion für Kurzbefehle und Spotlight an das Programm aus, linkd
+        # bricht die Verbindung ab. Die übrigen Ziele bleiben ad hoc.
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "Apple Development"
+        CODE_SIGNING_REQUIRED: "YES"
+    scheme:
+      testTargets:
+        - HaushaltsbuchTests
+
+  # Die Prüfungen des Kerns, der Nachbau von test_kern.py. Sie übersetzen den
+  # Kern selbst mit und laufen ohne das Programm, denn das Programm öffnet beim
+  # Start die echte Datenbank in iCloud. Aufruf siehe README.md.
+  HaushaltsbuchTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: HaushaltsbuchTests
+      - path: Haushaltsbuch/Kern
+      # Die Demodaten werden mitgeprüft, das Hauptprogramm des Werkzeugs nicht
+      - path: Demodaten/Demodaten.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.leifjp.haushaltsbuch.tests
+        GENERATE_INFOPLIST_FILE: "YES"
+
+  # Legt eine Demodatenbank an, der Nachfolger von demo_daten.py, siehe
+  # Demodaten.swift. Ein Bündel und kein reines Kommandozeilenwerkzeug, damit
+  # schema.sql als Beigabe darin liegt. Bequem über demo.sh.
+  Demodaten:
+    type: application
+    platform: macOS
+    sources:
+      - path: Demodaten
+      - path: Haushaltsbuch/Kern
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.leifjp.haushaltsbuch.demodaten
+        PRODUCT_NAME: Demodaten
+        GENERATE_INFOPLIST_FILE: "YES"
+    scheme: {}
+
+  # Malt eine Ansicht in eine PNG Datei, ohne Fenster, siehe Bildprobe.swift.
+  # Es benutzt dieselben Quellen wie das Programm, nur ohne dessen @main.
+  Bildprobe:
+    type: application
+    platform: macOS
+    sources:
+      - path: Bildprobe
+      - path: Haushaltsbuch
+        excludes:
+          - HaushaltsbuchApp.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.leifjp.haushaltsbuch.bildprobe
+        PRODUCT_NAME: Bildprobe
+        GENERATE_INFOPLIST_FILE: "YES"
+    scheme: {}
+
+  # Wegwerfprogramm, das nur Fokus und Tasten zeigt, siehe Tastentest.swift.
+  # Es benutzt dieselbe Kette wie das Programm und beantwortet die Frage, welche
+  # Steuerelemente den Fokus annehmen und welche Tasten bei ihnen ankommen.
+  Tastentest:
+    type: application
+    platform: macOS
+    sources:
+      - path: Tastentest
+      - path: Haushaltsbuch/Auswahl.swift
+      - path: Haushaltsbuch/Fokuslenkung.swift
+      - path: Haushaltsbuch/Tastenhilfe.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.leifjp.haushaltsbuch.tastentest
+        PRODUCT_NAME: Tastentest
+        GENERATE_INFOPLIST_FILE: "YES"
+    scheme: {}

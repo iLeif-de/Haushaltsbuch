@@ -1,0 +1,14 @@
+// Signierung für das Ziel Haushaltsbuch.
+//
+// Die Team ID ist persönlich und steht nicht im Repository. Zum Signieren mit
+// deinem eigenen Team lege Config/Signing.local.xcconfig an (wird von Git
+// ignoriert) mit dem Inhalt:
+//
+//     DEVELOPMENT_TEAM = DEINETEAMID
+//
+// Ohne Team ID baut das Programm trotzdem, nur liefert macOS dann keine
+// Aktionen für Kurzbefehle und Spotlight aus.
+
+DEVELOPMENT_TEAM =
+
+#include? "Signing.local.xcconfig"

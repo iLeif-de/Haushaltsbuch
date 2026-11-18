@@ -1,0 +1,56 @@
+# Nur die Swift-App (mac/) und die Anleitung gehören ins Repository.
+# Alles andere in diesem Ordner (Python-Fassung, docs, mail, Website,
+# Notizen) bleibt lokal. Neue Dateien auf oberster Ebene sind darum
+# automatisch ausgeschlossen, bis sie hier ausdrücklich freigegeben werden.
+/*
+!/.gitignore
+!/.github/
+!/LICENSE
+!/mac/
+!/web/
+/web/*
+!/web/assets/
+/web/assets/*
+!/web/assets/Anleitung Haushaltsbuch.pdf
+
+# Interne Notizen und erzeugte Dateien innerhalb von mac/
+/mac/README.md
+/mac/dist/
+/mac/Haushaltsbuch.xcodeproj/
+
+# Xcode and Swift build/user state
+.DS_Store
+.build/
+.swiftpm/
+build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+__pycache__/
+*.pyc
+
+# Signing material and credentials
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.p8
+*.pem
+*.key
+*.mobileprovision
+*.provisionprofile
+*.cer
+*.local.xcconfig
+
+# Generated archives, data and local work
+*.zip
+*.xcarchive/
+*.sqlite
+*.sqlite-*
+work/
+
+# Additional local tooling state
+.swiftpm-cache/
+*.log
+*.dSYM/
